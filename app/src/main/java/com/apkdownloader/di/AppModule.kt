@@ -1,5 +1,7 @@
 package com.apkdownloader.di
 
+import com.apkdownloader.BuildConfig
+import com.apkdownloader.BuildConfig.BASE_URL
 import com.apkdownloader.remote.api.AuthApi
 import dagger.Module
 import dagger.Provides
@@ -35,7 +37,7 @@ object AppModule {
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
