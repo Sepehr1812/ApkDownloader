@@ -1,9 +1,10 @@
 package com.apkdownloader.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apkdownloader.models.AppData
 import com.apkdownloader.remote.NetworkResult
+import com.apkdownloader.usecases.GetAppData
 import com.apkdownloader.usecases.GetAuthData
 import com.apkdownloader.usecases.GetAuthToken
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +18,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ApkDownloaderViewModel @Inject constructor(
     private val getAuthData: GetAuthData,
-    private val getAuthToken: GetAuthToken
+    private val getAuthToken: GetAuthToken,
+    private val getAppData: GetAppData
 ) : ViewModel() {
+
+    private val _appDataState = MutableStateFlow<AppData?>(null)
+    val appDataState = _appDataState.asStateFlow()
 
     private val _errorState = MutableStateFlow("")
     val errorState = _errorState.asStateFlow()
@@ -47,22 +52,32 @@ class ApkDownloaderViewModel @Inject constructor(
         }
     }
 
-    private fun getAuthToken(answer: Int) {
-        viewModelScope.launch {
-            getAuthToken.executeUseCase(GetAuthToken.RequestValues(answer)).also {
+    private suspend fun getAuthToken(answer: Int) {
+        getAuthToken.executeUseCase(GetAuthToken.RequestValues(answer)).also {
 
-                when (it) {
-                    is NetworkResult.Success -> {
-                        Log.d("ApkDownloaderViewModel::getAuthToken", it.data)
-                        // TODO: call app api
-                    }
+            when (it) {
+                is NetworkResult.Success -> getAppData(it.data)
 
-                    is NetworkResult.Error ->
-                        _errorState.update { _ -> "Network Error: Code ${it.code}, ${it.message}" }
+                is NetworkResult.Error ->
+                    _errorState.update { _ -> "Network Error: Code ${it.code}, ${it.message}" }
 
-                    is NetworkResult.Exception ->
-                        _errorState.update { _ -> "Network Exception: ${it.e.message}" }
-                }
+                is NetworkResult.Exception ->
+                    _errorState.update { _ -> "Network Exception: ${it.e.message}" }
+            }
+        }
+    }
+
+    private suspend fun getAppData(authToken: String) {
+        getAppData.executeUseCase(GetAppData.RequestValues(authToken)).also {
+
+            when (it) {
+                is NetworkResult.Success -> _appDataState.update { _ -> it.data }
+
+                is NetworkResult.Error ->
+                    _errorState.update { _ -> "Network Error: Code ${it.code}, ${it.message}" }
+
+                is NetworkResult.Exception ->
+                    _errorState.update { _ -> "Network Exception: ${it.e.message}" }
             }
         }
     }
