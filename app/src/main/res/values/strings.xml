@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">ApkDownloader</string>
     <string name="download_page_title">Your App is ready to download!</string>
+    <string name="download_page_title_finished">Your App is ready to install!</string>
     <string name="app_icon_desc">App Icon</string>
     <string name="download_text">Download!</string>
-    <string name="downloading_text">Downloading…</string>
+    <string name="resume_text">Resume</string>
+    <string name="pause_text">Pause</string>
     <string name="Install_text">Install!</string>
 </resources>

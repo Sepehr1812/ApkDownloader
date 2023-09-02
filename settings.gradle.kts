@@ -12,6 +12,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        // added to download PRDownloader library
+        @Suppress("DEPRECATION")
+        //noinspection JcenterRepositoryObsolete
+        jcenter()
     }
 }
 
