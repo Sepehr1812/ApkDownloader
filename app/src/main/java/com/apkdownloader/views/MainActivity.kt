@@ -7,12 +7,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apkdownloader.ui.theme.ApkDownloaderTheme
@@ -34,31 +31,18 @@ class MainActivity : ComponentActivity() {
             if (errorState.isNotEmpty())
                 Toast.makeText(LocalContext.current, errorState, Toast.LENGTH_LONG).show()
 
+            val appDataState by apkDownloaderViewModel.appDataState.collectAsStateWithLifecycle()
+
             ApkDownloaderTheme {
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    if (appDataState != null)
+                        AppDownloadScreen(appDataState!!)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ApkDownloaderTheme {
-        Greeting("Android")
     }
 }
