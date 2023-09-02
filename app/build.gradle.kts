@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -68,6 +69,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-compiler:2.44")

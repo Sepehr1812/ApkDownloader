@@ -39,7 +39,7 @@ object AppModule {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
             .build()
 
     @Singleton
