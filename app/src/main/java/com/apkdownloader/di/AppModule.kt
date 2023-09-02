@@ -2,6 +2,7 @@ package com.apkdownloader.di
 
 import com.apkdownloader.BuildConfig
 import com.apkdownloader.BuildConfig.BASE_URL
+import com.apkdownloader.remote.api.AppApi
 import com.apkdownloader.remote.api.AuthApi
 import dagger.Module
 import dagger.Provides
@@ -46,4 +47,9 @@ object AppModule {
     @Provides
     fun provideAuthApi(retrofit: Retrofit): AuthApi =
         retrofit.create(AuthApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideAppApi(retrofit: Retrofit): AppApi =
+        retrofit.create(AppApi::class.java)
 }
