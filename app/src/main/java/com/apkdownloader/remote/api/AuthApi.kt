@@ -7,7 +7,7 @@ import retrofit2.http.Path
 interface AuthApi {
 
     @GET("v2/data")
-    suspend fun getAuthData(): Response<String>
+    suspend fun getAuthData(): Response<List<Int>>
 
     @GET("v2/authorization/{answer}")
     suspend fun getAuthToken(
